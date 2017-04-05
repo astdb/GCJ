@@ -38,25 +38,69 @@ func main() {
 				fmt.Fprintf(os.Stderr, "Error reading testcase count: %v\n", err)
 				return
 			}
-			fmt.Printf("%d\n", testcasecount)
+			// fmt.Printf("%d\n", testcasecount)
 			k++
 			continue
 		} else {
+			// only need to read and process the specified number of testcases
 			if k > testcasecount {
 				break
 			}
 		}
 
+		// read testcase
 		pancakestack := strings.TrimSpace(scanner.Text())
+		// fmt.Printf("%s (Flip? %v)\n", pancakestack, mustFlip(pancakestack))
 
-		fmt.Printf("%s\n", pancakestack)
+		// for i := 1; i <= len(pancakestack); i++ {
+		// 	fmt.Printf("\tFlipping first %d pancake(s): %s\n", i, flipStack(pancakestack, i))
+		// }
 
-		for i := 1; i <= len(pancakestack); i++ {
-			fmt.Printf("\tFlipping first %d pancake(s): %s\n", i, flipStack(pancakestack, i))
-		}
+		// for mustFlip(pancakestack) {
+			flipcount := 0
+			var top byte
+			// pancakestack_rune := []rune(pancakestack)
+			// fmt.Printf("\tFlipping first %d pancake(s): %s\n", i, flipStack(pancakestack, i))
+			for i := 0; (i < len(pancakestack)) && mustFlip(pancakestack); i++ {
+				// fmt.Printf("-----------------\ni = %d", i)
+				if i == 0 {
+					// remember the top cake 
+					top = pancakestack[i]
+
+					if len(pancakestack) == 1 {
+						pancakestack = flipStack(pancakestack, 1)
+						flipcount++
+						break
+					}
+
+					continue
+				}
+
+				if pancakestack[i] != top {
+					// flip from top to i-1, which is the top i pancakes
+					pancakestack = flipStack(pancakestack, i)
+					// pancakestack_ = []rune(pancakestack)
+					flipcount++
+					i = -1	// check from the start 
+				}
+			}
+		//}
+		fmt.Printf("Case #%d: %d\n", k, flipcount)
 
 		k++
 	}
+}
+
+// 'x-rays' a stack of pancakes and decides if it needs flipping of not
+func mustFlip(stack string) bool {
+	for _, pancake := range stack {
+		if pancake == '-' {
+			// found cake with happy side down - must flip
+			return true
+		}
+	}
+
+	return false
 }
 
 // flip the first n pancakes (positions 0-(n-1), top position being 0) of a given pancake stack
