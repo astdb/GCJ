@@ -50,43 +50,48 @@ func main() {
 
 		// read testcase
 		pancakestack := strings.TrimSpace(scanner.Text())
-		// fmt.Printf("%s (Flip? %v)\n", pancakestack, mustFlip(pancakestack))
+		
+		flipcount := 0
+		var top byte
+		
+		for i := 0; (i < len(pancakestack)) && mustFlip(pancakestack); i++ {
+			// fmt.Printf("-----------------\ni = %d", i)
+			// fmt.Printf("\ni = %d\n", i)
+			if i == 0 {
+				// remember the top cake
+				top = pancakestack[i]
+				// fmt.Printf("Top cake is <%c>\n", rune(top))
 
-		// for i := 1; i <= len(pancakestack); i++ {
-		// 	fmt.Printf("\tFlipping first %d pancake(s): %s\n", i, flipStack(pancakestack, i))
-		// }
-
-		// for mustFlip(pancakestack) {
-			flipcount := 0
-			var top byte
-			// pancakestack_rune := []rune(pancakestack)
-			// fmt.Printf("\tFlipping first %d pancake(s): %s\n", i, flipStack(pancakestack, i))
-			for i := 0; (i < len(pancakestack)) && mustFlip(pancakestack); i++ {
-				// fmt.Printf("-----------------\ni = %d", i)
-				if i == 0 {
-					// remember the top cake 
-					top = pancakestack[i]
-
-					if len(pancakestack) == 1 {
-						pancakestack = flipStack(pancakestack, 1)
-						flipcount++
-						break
-					}
-
-					continue
-				}
-
-				if pancakestack[i] != top {
-					// flip from top to i-1, which is the top i pancakes
-					pancakestack = flipStack(pancakestack, i)
-					// pancakestack_ = []rune(pancakestack)
+				if len(pancakestack) == 1 {
+					// fmt.Printf("Single-length stack and must be flipped - flipping..\n")
+					pancakestack = flipStack(pancakestack, 1)
 					flipcount++
-					i = -1	// check from the start 
+					// fmt.Printf("Flipcount: %d, stack: %s\n", flipcount, pancakestack)
+					break
 				}
-			}
-		//}
-		fmt.Printf("Case #%d: %d\n", k, flipcount)
 
+				continue
+			}
+
+			if pancakestack[i] != top {
+				// flip from top to i-1, which is the top i pancakes
+				// fmt.Printf("Change from top detected at i = %d (stack: %s) - flipping the top %d...\n", i, pancakestack, i)
+				pancakestack = flipStack(pancakestack, i)
+				// pancakestack_ = []rune(pancakestack)
+				flipcount++
+				// fmt.Printf("Flipcount: %d, stack: %s\n", flipcount, pancakestack)
+				i = -1	// check from the start 
+			}
+
+			if i == len(pancakestack)-1 && top == '-' {
+				pancakestack = flipStack(pancakestack, len(pancakestack))
+				flipcount++
+				// fmt.Printf("Flipcount: %d, stack: %s\n", flipcount, pancakestack)
+				
+			}
+		}
+		
+		fmt.Printf("Case #%d: %d\n", k, flipcount)
 		k++
 	}
 }
