@@ -6,9 +6,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
-	"sort"
 )
 
 func main() {
@@ -17,11 +17,6 @@ func main() {
 		fmt.Println("Usage: > go run CountingSheep.go <input.file>")
 		return
 	}
-
-	//----------------------------------test---------------------------------
-	// fmt.Printf("%v\n", getDigits(232168))
-	// return
-	//---------------------------------endtest-------------------------------
 
 	// capture input file name
 	file, err := os.Open(os.Args[1])
@@ -101,7 +96,7 @@ func contains(digits []int, n int) bool {
 	return false
 }
 
-// check if a given int slice has all the digits 0-9
+// check if a given int slice has all individual decimal digits
 func complete(digits []int) bool {
 	if len(digits) != 10 {
 		return false
@@ -120,33 +115,24 @@ func complete(digits []int) bool {
 	return true
 }
 
-// takes a positive integer and returns an int slice containing all unique decimal digits of it
+// takes a positive integer and returns an int slice containing all unique decimal digits of it e.g. 54682 -> []int{5,4,6,8,2}
 func getDigits(n int) []int {
 	if n < 0 {
 		return nil
 	}
 
 	rem := n % 10
+	n = n / 10
 	digits := []int{}
 	digits = append(digits, rem)
 
-	for rem > 0 {
-		// rem = rem % 2
-		n = n / 10
+	for n > 0 {
 		rem = n % 10
+		n = n / 10
 
-		in := false
-		// for _, v := range digits {
-		// 	if v == rem {
-		// 		in = true
-		// 		break
-		// 	}
-		// }
 		if contains(digits, rem) {
-			break
-		}
-
-		if !in {
+			continue
+		} else {
 			digits = append(digits, rem)
 		}
 	}
