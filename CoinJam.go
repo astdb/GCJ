@@ -28,8 +28,8 @@ func main() {
 	// setup scanner to read input file
 	scanner := bufio.NewScanner(file)
 
-	k := 0 // line numbers
-	testcasecount := 0	// only one testcase for both inputs for coinjam
+	k := 0             // line numbers
+	// testcasecount := 0 // only one testcase for both inputs for coinjam
 	for scanner.Scan() {
 		if k == 0 {
 			// read test case number
@@ -38,11 +38,17 @@ func main() {
 			continue
 		}
 
-		testcase_data := strings.split(strings.TrimSpace(scanner.Text()), " ")
+		testcase_data := strings.Split(strings.TrimSpace(scanner.Text()), " ")
 
-		if len(testcase_data == 2) {
-			cj_length := strconv.Atoi(strings.TrimSpace(testcase_data[0]))	// jamcoin length
-			cj_num := strconv.Atoi(strings.TrimSpace(testcase_data[1]))		// number of coins to generate
+		if len(testcase_data) == 2 {
+			cj_length, _ := strconv.Atoi(strings.TrimSpace(testcase_data[0])) // jamcoin length
+			cj_num, _ := strconv.Atoi(strings.TrimSpace(testcase_data[1]))    // number of coins to generate
+			fmt.Printf("%d %d\n", cj_length, cj_num)
 		}
 	}
+}
+
+// validateCoin takes a coin and checks its validity - if valid returns null error and slice of proof 
+func validateCoin(coin String) (proof []int, error err) {
+
 }
